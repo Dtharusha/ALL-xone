@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Plus, Edit, Trash2, Star, User, MapPin, Phone, Eye, Save, X, Camera, MessageSquare, Award, TrendingUp, LogOut } from 'lucide-react';
+import { ArrowLeft, Plus, CreditCard as Edit, Trash2, Star, User, MapPin, Phone, Eye, Save, X, Camera, MessageSquare, Award, TrendingUp, LogOut } from 'lucide-react';
 import { Partner, PartnerVehicle } from '../types';
 
 interface VehicleManagementPageProps {
@@ -211,11 +211,6 @@ export const VehicleManagementPage: React.FC<VehicleManagementPageProps> = ({
       setEditingVehicle(null);
     } else {
       setVehicles(prev => [...prev, newVehicle]);
-      // Update partner data to persist vehicles
-      onUpdatePartner({
-        vehicles: [...vehicles, newVehicle],
-        hasAddedVehicle: true
-      });
     }
 
     // Reset form

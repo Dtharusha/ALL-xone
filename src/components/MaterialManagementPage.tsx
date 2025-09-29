@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Plus, Edit, Trash2, Star, User, MapPin, Phone, Eye, Save, X, Camera, MessageSquare, Award, TrendingUp, LogOut, Package, Upload } from 'lucide-react';
+import { ArrowLeft, Plus, CreditCard as Edit, Trash2, Star, User, MapPin, Phone, Eye, Save, X, Camera, MessageSquare, Award, TrendingUp, LogOut, Package, Upload } from 'lucide-react';
 import { Partner, PartnerMaterial } from '../types';
 
 interface MaterialManagementPageProps {
@@ -188,11 +188,6 @@ export const MaterialManagementPage: React.FC<MaterialManagementPageProps> = ({
       setEditingMaterial(null);
     } else {
       setMaterials(prev => [...prev, newMaterial]);
-      // Update partner data to persist materials
-      onUpdatePartner({
-        materials: [...materials, newMaterial],
-        hasAddedVehicle: true
-      });
     }
 
     // Reset form
