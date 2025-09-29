@@ -237,7 +237,9 @@ export const MaterialSupplierRegistration: React.FC<MaterialSupplierRegistration
       onSubmit({
         ...formData,
         role: 'material_supplier',
-        type: 'material_supplier'
+        type: 'material_supplier',
+        // Include material data for immediate use
+        materialData: formData.materialTypes
       });
     }
   };

@@ -60,35 +60,36 @@ export const VehicleManagementPage: React.FC<VehicleManagementPageProps> = ({
   });
 
   // Mock vehicles data
-  const [vehicles, setVehicles] = useState<PartnerVehicle[]>([
-    {
-      id: '1',
-      partnerId: partner.id,
-      name: 'JCB ',
-      type: 'JCB',
-      model: '3CX',
-      year: 2020,
-      description: 'Heavy-duty excavator perfect for digging and construction work. Well-maintained with experienced operator.',
-      pricePerHour: 32000,
-      pricePerDay: 210000,
-      specifications: ['Operating Weight: 8.5 tons', 'Max Digging Depth: 5.2m', 'Bucket Capacity: 0.28m³', 'Engine Power: 74kW'],
-      images: ['https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=800'],
-      images: ['https://i.pinimg.com/736x/08/81/7e/08817ee595ed09578140e8895a177e8b.jpg'],
-      available: true,
-      location: partner.address,
-      insuranceDetails: {
-        provider: 'Equipment Insurance Co',
-        policyNumber: 'EQ123456789',
-        expiryDate: '2025-06-30'
-      },
-      maintenanceRecords: {
-        lastService: '2024-01-15',
-        nextService: '2024-04-15',
-        certifications: ['Safety Certified', 'Operator Certified']
-      },
-      status: 'active'
-    }
-  ]);
+  const [vehicles, setVehicles] = useState<PartnerVehicle[]>(
+    partner.vehicles || [
+      {
+        id: '1',
+        partnerId: partner.id,
+        name: 'JCB 3CX Backhoe Loader',
+        type: 'JCB',
+        model: '3CX',
+        year: 2020,
+        description: 'Heavy-duty excavator perfect for digging and construction work. Well-maintained with experienced operator.',
+        pricePerHour: 32000,
+        pricePerDay: 210000,
+        specifications: ['Operating Weight: 8.5 tons', 'Max Digging Depth: 5.2m', 'Bucket Capacity: 0.28m³', 'Engine Power: 74kW'],
+        images: ['https://i.pinimg.com/736x/08/81/7e/08817ee595ed09578140e8895a177e8b.jpg'],
+        available: true,
+        location: partner.address,
+        insuranceDetails: {
+          provider: 'Equipment Insurance Co',
+          policyNumber: 'EQ123456789',
+          expiryDate: '2025-06-30'
+        },
+        maintenanceRecords: {
+          lastService: '2024-01-15',
+          nextService: '2024-04-15',
+          certifications: ['Safety Certified', 'Operator Certified']
+        },
+        status: 'active'
+      }
+    ]
+  );
 
   // Mock feedback data
   const [feedbacks] = useState<CustomerFeedback[]>([
@@ -210,6 +211,11 @@ export const VehicleManagementPage: React.FC<VehicleManagementPageProps> = ({
       setEditingVehicle(null);
     } else {
       setVehicles(prev => [...prev, newVehicle]);
+      // Update partner data to persist vehicles
+      onUpdatePartner({
+        vehicles: [...vehicles, newVehicle],
+        hasAddedVehicle: true
+      });
     }
 
     // Reset form

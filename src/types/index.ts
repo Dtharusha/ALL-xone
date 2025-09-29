@@ -103,6 +103,7 @@ export interface Partner {
   hasDeletedVehicle?: boolean;
   profileViews?: number;
   vehicles?: PartnerVehicle[];
+  materials?: PartnerMaterial[];
 }
 
 export interface Notification {

@@ -62,40 +62,42 @@ export const MaterialManagementPage: React.FC<MaterialManagementPageProps> = ({
   });
 
   // Mock materials data
-  const [materials, setMaterials] = useState<PartnerMaterial[]>([
-    {
-      id: '1',
-      partnerId: partner.id,
-      name: 'Premium River Sand',
-      category: 'Sand',
-      description: 'High-quality river sand perfect for construction work. Clean, well-graded sand suitable for concrete mixing and masonry work.',
-      pricePerUnit: 6500,
-      unit: 'cubic meter',
-      minimumOrder: 5,
-      availableQuantity: 1000,
-      images: ['https://i.pinimg.com/1200x/96/a2/56/96a256db3f22c571e3e653ff2017232d.jpg'],
-      qualityCertifications: ['ISO 9001', 'Quality Tested'],
-      deliveryAreas: ['Colombo', 'Gampaha', 'Kalutara'],
-      deliveryTimeframe: 'Same day delivery available',
-      status: 'active'
-    },
-    {
-      id: '2',
-      partnerId: partner.id,
-      name: 'Premium Garden Soil',
-      category: 'Soil',
-      description: 'Rich, fertile soil ideal for landscaping and gardening projects. Nutrient-rich composition perfect for plant growth.',
-      pricePerUnit: 7500,
-      unit: 'cubic meter',
-      minimumOrder: 3,
-      availableQuantity: 500,
-      images: ['https://i.pinimg.com/1200x/da/4c/c8/da4cc84e4aba23138da71ae896b78b29.jpg'],
-      qualityCertifications: ['Organic Certified', 'Soil Tested'],
-      deliveryAreas: ['Colombo', 'Gampaha'],
-      deliveryTimeframe: 'Next day delivery',
-      status: 'active'
-    }
-  ]);
+  const [materials, setMaterials] = useState<PartnerMaterial[]>(
+    partner.materials || [
+      {
+        id: '1',
+        partnerId: partner.id,
+        name: 'Premium River Sand',
+        category: 'Sand',
+        description: 'High-quality river sand perfect for construction work. Clean, well-graded sand suitable for concrete mixing and masonry work.',
+        pricePerUnit: 6500,
+        unit: 'cubic meter',
+        minimumOrder: 5,
+        availableQuantity: 1000,
+        images: ['https://i.pinimg.com/1200x/96/a2/56/96a256db3f22c571e3e653ff2017232d.jpg'],
+        qualityCertifications: ['ISO 9001', 'Quality Tested'],
+        deliveryAreas: ['Colombo', 'Gampaha', 'Kalutara'],
+        deliveryTimeframe: 'Same day delivery available',
+        status: 'active'
+      },
+      {
+        id: '2',
+        partnerId: partner.id,
+        name: 'Premium Garden Soil',
+        category: 'Soil',
+        description: 'Rich, fertile soil ideal for landscaping and gardening projects. Nutrient-rich composition perfect for plant growth.',
+        pricePerUnit: 7500,
+        unit: 'cubic meter',
+        minimumOrder: 3,
+        availableQuantity: 500,
+        images: ['https://i.pinimg.com/1200x/da/4c/c8/da4cc84e4aba23138da71ae896b78b29.jpg'],
+        qualityCertifications: ['Organic Certified', 'Soil Tested'],
+        deliveryAreas: ['Colombo', 'Gampaha'],
+        deliveryTimeframe: 'Next day delivery',
+        status: 'active'
+      }
+    ]
+  );
 
   // Mock feedback data
   const [feedbacks] = useState<CustomerFeedback[]>([
@@ -186,6 +188,11 @@ export const MaterialManagementPage: React.FC<MaterialManagementPageProps> = ({
       setEditingMaterial(null);
     } else {
       setMaterials(prev => [...prev, newMaterial]);
+      // Update partner data to persist materials
+      onUpdatePartner({
+        materials: [...materials, newMaterial],
+        hasAddedVehicle: true
+      });
     }
 
     // Reset form

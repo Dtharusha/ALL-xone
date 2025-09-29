@@ -186,6 +186,81 @@ function App() {
   const handleVehicleOwnerRegistration = (data: any) => {
     setRegistrationData(data);
     setShowVehicleOwnerRegistration(false);
+    
+    // Create user and partner immediately with vehicle data
+    const newUser: User = {
+      id: Date.now().toString(),
+      name: data.fullName,
+      email: data.email,
+      phone: data.mobileNumber,
+      role: 'vehicle_owner',
+      isAuthenticated: true,
+      address: data.address
+    };
+    setUser(newUser);
+    
+    // Create partner with vehicles
+    const newPartner: Partner = {
+      id: Date.now().toString(),
+      type: 'vehicle_owner',
+      businessName: data.fullName + ' Vehicle Services',
+      ownerName: data.fullName,
+      email: data.email,
+      phone: data.mobileNumber,
+      address: data.address,
+      district: data.district,
+      businessLicense: 'BL' + Date.now(),
+      brNumber: 'BR' + Date.now(),
+      yearsInBusiness: 1,
+      description: 'Professional vehicle rental services',
+      services: ['Vehicle Rental'],
+      certifications: [],
+      insuranceDetails: {
+        provider: 'Sample Insurance',
+        policyNumber: 'POL' + Date.now(),
+        expiryDate: '2025-12-31'
+      },
+      documents: {
+        businessLicense: null,
+        insurance: null,
+        brCertificate: null,
+        vehiclePhotos: []
+      },
+      status: 'approved',
+      registrationDate: new Date().toISOString(),
+      rating: 4.5,
+      totalJobs: 0,
+      notifications: [],
+      // Convert vehicle types to partner vehicles
+      vehicles: data.vehicleData ? data.vehicleData.map((vehicleType: any, index: number) => ({
+        id: (Date.now() + index).toString(),
+        partnerId: Date.now().toString(),
+        name: `${vehicleType.modelBrand} ${vehicleType.type}`,
+        type: vehicleType.type,
+        model: vehicleType.modelBrand,
+        year: new Date().getFullYear(),
+        description: vehicleType.description,
+        pricePerHour: Number(vehicleType.minPricePerHour),
+        pricePerDay: Number(vehicleType.minPricePerDay),
+        specifications: [],
+        images: vehicleType.images.map((file: File) => URL.createObjectURL(file)),
+        available: true,
+        location: data.address,
+        insuranceDetails: {
+          provider: 'Vehicle Insurance Co',
+          policyNumber: 'VEH' + Date.now() + index,
+          expiryDate: '2025-12-31'
+        },
+        maintenanceRecords: {
+          lastService: new Date().toISOString().split('T')[0],
+          nextService: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          certifications: []
+        },
+        status: 'active' as const
+      })) : []
+    };
+    setPartner(newPartner);
+    
     setCurrentView('confirmation');
   };
 
@@ -295,7 +370,50 @@ function App() {
           registrationDate: new Date().toISOString(),
           rating: 0,
           totalJobs: 0,
-          notifications: []
+          notifications: [],
+          // Include vehicle/material data if available
+          vehicles: registrationData.vehicleData ? registrationData.vehicleData.map((vehicleType: any, index: number) => ({
+            id: (Date.now() + index).toString(),
+            partnerId: Date.now().toString(),
+            name: `${vehicleType.modelBrand} ${vehicleType.type}`,
+            type: vehicleType.type,
+            model: vehicleType.modelBrand,
+            year: new Date().getFullYear(),
+            description: vehicleType.description,
+            pricePerHour: Number(vehicleType.minPricePerHour),
+            pricePerDay: Number(vehicleType.minPricePerDay),
+            specifications: [],
+            images: vehicleType.images.map((file: File) => URL.createObjectURL(file)),
+            available: true,
+            location: registrationData.address,
+            insuranceDetails: {
+              provider: 'Vehicle Insurance Co',
+              policyNumber: 'VEH' + Date.now() + index,
+              expiryDate: '2025-12-31'
+            },
+            maintenanceRecords: {
+              lastService: new Date().toISOString().split('T')[0],
+              nextService: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+              certifications: []
+            },
+            status: 'active' as const
+          })) : undefined,
+          materials: registrationData.materialData ? registrationData.materialData.map((materialType: any, index: number) => ({
+            id: (Date.now() + index).toString(),
+            partnerId: Date.now().toString(),
+            name: `Premium ${materialType.type}`,
+            category: materialType.type,
+            description: `High-quality ${materialType.type.toLowerCase()} for construction projects`,
+            pricePerUnit: Number(materialType.minPrice),
+            unit: 'cubic meter',
+            minimumOrder: 1,
+            availableQuantity: 1000,
+            images: materialType.images.map((file: File) => URL.createObjectURL(file)),
+            qualityCertifications: ['Quality Tested'],
+            deliveryAreas: [registrationData.district],
+            deliveryTimeframe: registrationData.deliveryIncluded ? '1-2 business days' : 'Customer pickup',
+            status: 'active' as const
+          })) : undefined
         };
         setPartner(newPartner);
         setCurrentView('services');

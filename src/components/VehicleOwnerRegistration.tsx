@@ -266,7 +266,9 @@ export const VehicleOwnerRegistration: React.FC<VehicleOwnerRegistrationProps> =
       onSubmit({
         ...formData,
         role: 'vehicle_owner',
-        type: 'vehicle_owner'
+        type: 'vehicle_owner',
+        // Include vehicle data for immediate use
+        vehicleData: formData.vehicleTypes
       });
     }
   };
